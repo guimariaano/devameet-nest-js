@@ -35,6 +35,14 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Envs
+.env
+.env.local
+.env.dev
+.env.hml
+.env.prod
+
+
 # dotenv environment variable files
 .env
 .env.development.local

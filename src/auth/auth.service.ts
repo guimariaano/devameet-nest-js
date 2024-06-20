@@ -1,17 +1,30 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import { LoginDto } from "./dtos/login.dto";
 import { MessagesHelper } from "./helpers/messages.helper";
+import { RegisterDto } from "src/user/dtos/register.dto";
+import { UserService } from "src/user/user.service";
+import { UserMessagesHelper } from "src/user/helpers/message.helper";
 
 @Injectable()
-export class AuthService{
+export class AuthService {
+    private logger = new Logger(AuthService.name);
 
-    login(dto: LoginDto){
-         if(dto.login !== 'teste@teste.com' || dto.password !== 'teste@123'){
+    constructor(private readonly userService: UserService) {}
+
+    login(dto: LoginDto) {
+        this.logger.debug('login - started');
+        if (dto.login !== 'teste@teste.com' || dto.password !== 'teste@123') {
             throw new BadRequestException(MessagesHelper.AUTH_LOGIN_NOT_FOUND);
-         }
-
-         return dto;
-
+        }
+        return dto;
     }
-    
+
+    async register(dto: RegisterDto) {
+        this.logger.debug('register - started');
+        if (await this.userService.existsByEmail(dto.email)) {
+            throw new BadRequestException(UserMessagesHelper.REGISTER_EXIST_EMAIL_ACCOUNT);
+        }
+
+        await this.userService.create(dto);
+    }
 }
