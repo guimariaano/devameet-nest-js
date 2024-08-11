@@ -11,6 +11,9 @@ import { Position, PositionDocument } from './schemas/position.schema';
 
 @Injectable()
 export class RoomService {
+    getUsersPosition(id: string, link: string) {
+      throw new Error('Method not implemented.');
+    }
     private logger = new Logger(RoomService.name);
 
     constructor(
@@ -41,7 +44,7 @@ export class RoomService {
         return await this.positionModel.find({meet});
     }
 
-    async deleteUsersPosition(clientId: string){
+    async deleteUsersPosition(clientId: string,){
         //this.logger.debug(`deleteUsersPosition - ${clientId}`);
         return await this.positionModel.deleteMany({clientId});
     }
